@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عجلة الهدايا الاحترافية</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #1a1a2e;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            color: #e94560;
+            font-size: 28px;
+            text-shadow: 0 2px 10px rgba(233, 69, 96, 0.3);
+        }
+
+        /* زر الإعدادات العلوي */
+        .settings-icon-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #16213e;
+            border: 1px solid #0f3460;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: 0.3s;
+            z-index: 99;
+        }
+
+        .settings-icon-btn:hover {
+            transform: rotate(45deg);
+            background: #0f3460;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* قسم السبنر */
+        .spinner-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin-bottom: 30px;
+        }
+
+        /* المؤشر */
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #e94560;
+            z-index: 10;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 0 25px rgba(0,0,0,0.6);
+            transition: transform 4s cubic-bezier(0.1, 0.8, 0.25, 1);
+        }
+
+        .spin-btn {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 15px 45px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.4);
+            transition: 0.2s;
+        }
+
+        .spin-btn:hover {
+            background: #ff5e7e;
+            transform: scale(1.05);
+        }
+
+        .spin-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #result {
+            margin-top: 25px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #00fff0;
+            min-height: 35px;
+            text-align: center;
+        }
+
+        /* النافذة المنبثقة للإعدادات (Modal) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s ease;
+            z-index: 100;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .control-panel {
+            background: #16213e;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 500px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .control-panel h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-bottom: 2px solid #0f3460;
+            padding-bottom: 10px;
+            color: #00fff0;
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: #ff5e7e;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .gift-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        input {
+            background: #1a1a2e;
+            border: 1px solid #0f3460;
+            color: white;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        input[type="text"] { flex: 2; }
+        input[type="number"] { flex: 1; text-align: center; }
+
+        .remove-btn {
+            background: #8b0000;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .remove-btn:hover { background: #ff0000; }
+
+        .add-btn, .update-btn {
+            background: #0f3460;
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .add-btn:hover { background: #1f4068; }
+        .update-btn { background: #228b22; margin-top: 8px; }
+        .update-btn:hover { background: #2e8b57; }
+
+        .total-percentage {
+            margin-top: 15px;
+            font-size: 15px;
+            text-align: right;
+            color: #ffaa00;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="settings-icon-btn" onclick="toggleModal(true)">⚙️</button>
+
+    <h1>عجلة الهدايا التفاعلية</h1>
+
+    <div class="container">
+        <div class="spinner-section">
+            <div class="wheel-container">
+                <div class="pointer"></div>
+                <canvas id="wheel" width="400" height="400"></canvas>
+            </div>
+            <button class="spin-btn" id="spinBtn" onclick="spin()">إبدأ السحب!</button>
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settingsModal">
+        <div class="control-panel">
+            <button class="close-modal-btn" onclick="toggleModal(false)">✕</button>
+            <h2>إعدادات الهدايا والنسب الخفية</h2>
+            <div id="giftsContainer">
+                </div>
+            <button class="add-btn" onclick="addGiftRow()">+ إضافة هدية جديدة</button>
+            <button class="update-btn" onclick="updateWheel()">تحديث وتطبيق التعديلات</button>
+            <div class="total-percentage" id="totalCheck">مجموع النسب الحالي: 100%</div>
+        </div>
+    </div>
+
+    <script>
+        // البيانات الافتراضية
+        const defaultGifts = [
+            { text: "خصم 10%", probability: 50, color: "#1f4068" },
+            { text: "توصيل مجاني", probability: 30, color: "#e94560" },
+            { text: "هدية مجانية", probability: 15, color: "#0f3460" },
+            { text: "الجائزة الكبرى", probability: 5, color: "#ffaa00" }
+        ];
+
+        let gifts = JSON.parse(localStorage.getItem('wheelGifts')) || defaultGifts;
+
+        const canvas = document.getElementById("wheel");
+        const ctx = canvas.getContext("2d");
+        const spinBtn = document.getElementById("spinBtn");
+        let currentRotation = 0;
+        let isSpinning = false;
+
+        function getRandomColor() {
+            const colors = ["#1f4068", "#e94560", "#0f3460", "#ffaa00", "#4e0e2e", "#16a085", "#2980b9", "#8e44ad"];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // فتح وإغلاق نافذة الإعدادات
+        function toggleModal(show) {
+            const modal = document.getElementById("settingsModal");
+            if (show) {
+                renderControlPanel();
+                modal.classList.add("active");
+            } else {
+                modal.classList.remove("active");
+            }
+        }
+
+        // رسم العجلة (خانات متساوية هندسياً)
+        function drawWheel() {
+            const totalGifts = gifts.length;
+            if (totalGifts === 0) return;
+
+            const sliceAngle = (2 * Math.PI) / totalGifts;
+            let startAngle = 0;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = centerX;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            gifts.forEach((gift) => {
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = gift.color;
+                ctx.fill();
+
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(startAngle + sliceAngle / 2);
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 14px Segoe UI";
+                ctx.textAlign = "right";
+                ctx.fillText(gift.text, radius - 20, 5);
+                ctx.restore();
+
+                startAngle += sliceAngle;
+            });
+        }
+
+        function renderControlPanel() {
+            const container = document.getElementById("giftsContainer");
+            container.innerHTML = "";
+
+            gifts.forEach((gift, index) => {
+                const row = document.createElement("div");
+                row.className = "gift-row";
+                row.innerHTML = `
+                    <input type="text" value="${gift.text}" id="text-${index}" placeholder="اسم الهدية">
+                    <input type="number" value="${gift.probability}" id="prob-${index}" min="0" max="100" placeholder="%">
+                    <button class="remove-btn" onclick="removeGift(${index})">حذف</button>
+                `;
+                container.appendChild(row);
+            });
+            checkTotalPercentage();
+        }
+
+        function addGiftRow() {
+            gifts.push({ text: "هدية جديدة", probability: 0, color: getRandomColor() });
+            renderControlPanel();
+        }
+
+        function removeGift(index) {
+            if(gifts.length > 1) {
+                gifts.splice(index, 1);
+                renderControlPanel();
+            } else {
+                alert("يجب أن تبقي على هدية واحدة على الأقل!");
+            }
+        }
+
+        function checkTotalPercentage() {
+            let total = 0;
+            gifts.forEach((_, index) => {
+                const probVal = parseFloat(document.getElementById(`prob-${index}`)?.value) || 0;
+                total += probVal;
+            });
+            
+            const totalCheckEl = document.getElementById("totalCheck");
+            totalCheckEl.innerText = `مجموع النسب الحالي: ${total}%`;
+            
+            if (total !== 100) {
+                totalCheckEl.style.color = "#ff5e7e";
+            } else {
+                totalCheckEl.style.color = "#00fff0";
+            }
+            return total;
+        }
+
+        function updateWheel() {
+            const total = checkTotalPercentage();
+            if (total !== 100) {
+                alert(`تنبيه: مجموع النسب يجب أن يكون 100% تماماً. المجموع الحالي هو ${total}%`);
+                return;
+            }
+
+            gifts.forEach((gift, index) => {
+                gift.text = document.getElementById(`text-${index}`).value;
+                gift.probability = parseFloat(document.getElementById(`prob-${index}`).value) || 0;
+            });
+
+            localStorage.setItem('wheelGifts', JSON.stringify(gifts));
+            drawWheel();
+            alert("تم حفظ التعديلات بنجاح!");
+            toggleModal(false); //
+      

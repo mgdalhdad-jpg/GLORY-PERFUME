@@ -1,2 +1,0 @@
-# GLORY-PERFUME
-Gift

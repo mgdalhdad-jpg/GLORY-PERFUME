@@ -25,36 +25,11 @@
         }
 
         h1 {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             color: #e94560;
-            font-size: 28px;
+            font-size: 24px;
             text-shadow: 0 2px 10px rgba(233, 69, 96, 0.3);
-        }
-
-        /* زر الإعدادات العلوي */
-        .settings-icon-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #16213e;
-            border: 1px solid #0f3460;
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 22px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: 0.3s;
-            z-index: 99;
-        }
-
-        .settings-icon-btn:hover {
-            transform: rotate(45deg);
-            background: #0f3460;
+            text-align: center;
         }
 
         .container {
@@ -76,9 +51,9 @@
 
         .wheel-container {
             position: relative;
-            width: 350px;
-            height: 350px;
-            margin-bottom: 30px;
+            width: 320px;
+            height: 320px;
+            margin-bottom: 25px;
         }
 
         /* المؤشر */
@@ -103,23 +78,45 @@
             transition: transform 4s cubic-bezier(0.1, 0.8, 0.25, 1);
         }
 
+        .actions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 280px;
+            margin-top: 10px;
+        }
+
         .spin-btn {
             background: #e94560;
             color: white;
             border: none;
-            padding: 15px 45px;
-            font-size: 20px;
+            padding: 14px;
+            font-size: 18px;
             font-weight: bold;
             border-radius: 30px;
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(233, 69, 96, 0.4);
             transition: 0.2s;
+            width: 100%;
         }
 
-        .spin-btn:hover {
-            background: #ff5e7e;
-            transform: scale(1.05);
+        /* زر الإعدادات الجديد في الأسفل */
+        .settings-trigger-btn {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            color: #00fff0;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
         }
+
+        .spin-btn:hover { background: #ff5e7e; transform: scale(1.02); }
+        .settings-trigger-btn:hover { background: #0f3460; }
 
         .spin-btn:disabled {
             background: #555;
@@ -128,8 +125,8 @@
         }
 
         #result {
-            margin-top: 25px;
-            font-size: 24px;
+            margin-top: 20px;
+            font-size: 22px;
             font-weight: bold;
             color: #00fff0;
             min-height: 35px;
@@ -143,7 +140,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -151,7 +148,7 @@
             pointer-events: none;
             transition: 0.3s ease;
             z-index: 100;
-            padding: 20px;
+            padding: 15px;
         }
 
         .modal-overlay.active {
@@ -161,19 +158,19 @@
 
         .control-panel {
             background: #16213e;
-            padding: 25px;
+            padding: 20px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            max-width: 500px;
+            max-width: 450px;
             width: 100%;
-            max-height: 85vh;
+            max-height: 80vh;
             overflow-y: auto;
             position: relative;
         }
 
         .control-panel h2 {
             margin-bottom: 20px;
-            font-size: 22px;
+            font-size: 18px;
             border-bottom: 2px solid #0f3460;
             padding-bottom: 10px;
             color: #00fff0;
@@ -181,18 +178,22 @@
 
         .close-modal-btn {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            background: none;
+            top: 15px;
+            left: 15px;
+            background: #e94560;
             border: none;
-            color: #ff5e7e;
-            font-size: 24px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             cursor: pointer;
         }
 
         .gift-row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 12px;
             align-items: center;
         }
@@ -201,46 +202,42 @@
             background: #1a1a2e;
             border: 1px solid #0f3460;
             color: white;
-            padding: 10px 12px;
+            padding: 10px;
             border-radius: 6px;
             font-size: 14px;
         }
 
-        input[type="text"] { flex: 2; }
-        input[type="number"] { flex: 1; text-align: center; }
+        input[type="text"] { flex: 2; width: 60%; }
+        input[type="number"] { flex: 1; width: 25%; text-align: center; }
 
         .remove-btn {
             background: #8b0000;
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 10px;
             border-radius: 6px;
             cursor: pointer;
-            transition: 0.2s;
         }
-        .remove-btn:hover { background: #ff0000; }
 
         .add-btn, .update-btn {
             background: #0f3460;
             color: white;
             border: none;
-            padding: 12px 15px;
+            padding: 12px;
             border-radius: 6px;
             cursor: pointer;
             width: 100%;
             font-weight: bold;
-            margin-top: 15px;
-            font-size: 15px;
-            transition: 0.2s;
+            margin-top: 10px;
+            font-size: 14px;
         }
 
         .add-btn:hover { background: #1f4068; }
-        .update-btn { background: #228b22; margin-top: 8px; }
-        .update-btn:hover { background: #2e8b57; }
+        .update-btn { background: #228b22; }
 
         .total-percentage {
             margin-top: 15px;
-            font-size: 15px;
+            font-size: 14px;
             text-align: right;
             color: #ffaa00;
             font-weight: bold;
@@ -248,8 +245,6 @@
     </style>
 </head>
 <body>
-
-    <button class="settings-icon-btn" onclick="toggleModal(true)">⚙️</button>
 
     <h1>عجلة الهدايا التفاعلية</h1>
 
@@ -259,17 +254,23 @@
                 <div class="pointer"></div>
                 <canvas id="wheel" width="400" height="400"></canvas>
             </div>
-            <button class="spin-btn" id="spinBtn" onclick="spin()">إبدأ السحب!</button>
+            
+            <!-- حاوية الأزرار أسفل السبنر مباشرة -->
+            <div class="actions-container">
+                <button class="spin-btn" id="spinBtn" onclick="spin()">إبدأ السحب!</button>
+                <button class="settings-trigger-btn" onclick="toggleModal(true)">⚙️ فتح لوحة التحكم والنسب</button>
+            </div>
+            
             <div id="result"></div>
         </div>
     </div>
 
+    <!-- نافذة الإعدادات -->
     <div class="modal-overlay" id="settingsModal">
         <div class="control-panel">
             <button class="close-modal-btn" onclick="toggleModal(false)">✕</button>
             <h2>إعدادات الهدايا والنسب الخفية</h2>
-            <div id="giftsContainer">
-                </div>
+            <div id="giftsContainer"></div>
             <button class="add-btn" onclick="addGiftRow()">+ إضافة هدية جديدة</button>
             <button class="update-btn" onclick="updateWheel()">تحديث وتطبيق التعديلات</button>
             <div class="total-percentage" id="totalCheck">مجموع النسب الحالي: 100%</div>
@@ -277,7 +278,6 @@
     </div>
 
     <script>
-        // البيانات الافتراضية
         const defaultGifts = [
             { text: "خصم 10%", probability: 50, color: "#1f4068" },
             { text: "توصيل مجاني", probability: 30, color: "#e94560" },
@@ -285,7 +285,9 @@
             { text: "الجائزة الكبرى", probability: 5, color: "#ffaa00" }
         ];
 
-        let gifts = JSON.parse(localStorage.getItem('wheelGifts')) || defaultGifts;
+        // ميزة أمان إضافية: التحقق من صحة البيانات لضمان عدم ظهور مصفوفة فارغة
+        let savedGifts = JSON.parse(localStorage.getItem('wheelGifts'));
+        let gifts = (savedGifts && savedGifts.length > 0) ? savedGifts : defaultGifts;
 
         const canvas = document.getElementById("wheel");
         const ctx = canvas.getContext("2d");
@@ -298,7 +300,6 @@
             return colors[Math.floor(Math.random() * colors.length)];
         }
 
-        // فتح وإغلاق نافذة الإعدادات
         function toggleModal(show) {
             const modal = document.getElementById("settingsModal");
             if (show) {
@@ -309,7 +310,6 @@
             }
         }
 
-        // رسم العجلة (خانات متساوية هندسياً)
         function drawWheel() {
             const totalGifts = gifts.length;
             if (totalGifts === 0) return;
@@ -407,5 +407,55 @@
             localStorage.setItem('wheelGifts', JSON.stringify(gifts));
             drawWheel();
             alert("تم حفظ التعديلات بنجاح!");
-            toggleModal(false); //
-        
+            toggleModal(false);
+        }
+
+        function spin() {
+            if (isSpinning) return;
+
+            const total = gifts.reduce((sum, g) => sum + g.probability, 0);
+            if (total !== 100) {
+                alert("يرجى فتح الإعدادات والتأكد من أن مجموع النسب يساوي 100% أولاً.");
+                return;
+            }
+
+            document.getElementById("result").innerText = "";
+            isSpinning = true;
+            spinBtn.disabled = true;
+
+            const randomPick = Math.random() * 100;
+            let currentSum = 0;
+            let winningIndex = 0;
+
+            for (let i = 0; i < gifts.length; i++) {
+                currentSum += gifts[i].probability;
+                if (randomPick <= currentSum) {
+                    winningIndex = i;
+                    break;
+                }
+            }
+
+            const totalGifts = gifts.length;
+            const sliceAngleDegrees = 360 / totalGifts;
+            
+            const startAngleDegrees = winningIndex * sliceAngleDegrees;
+            const centerOfSliceDegrees = startAngleDegrees + (sliceAngleDegrees / 2);
+
+            const targetRotation = (360 - centerOfSliceDegrees) - 90;
+            const extraSpins = 6 * 360; 
+            currentRotation += extraSpins + targetRotation - (currentRotation % 360);
+
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                spinBtn.disabled = false;
+                document.getElementById("result").innerText = `🎉 مبروك! فزت بـ: ${gifts[winningIndex].text}`;
+            }, 4000);
+        }
+
+        // تشغيل أولي لعرض العجلة فوراً بالبيانات الصحيحة
+        drawWheel();
+    </script>
+</body>
+</html>

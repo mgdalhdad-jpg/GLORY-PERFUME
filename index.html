@@ -22,6 +22,7 @@
             min-height: 100vh;
             padding: 20px;
             overflow-x: hidden;
+            position: relative;
         }
 
         h1 {
@@ -101,22 +102,7 @@
             width: 100%;
         }
 
-        /* زر الإعدادات الجديد في الأسفل */
-        .settings-trigger-btn {
-            background: #16213e;
-            border: 1px solid #0f3460;
-            color: #00fff0;
-            padding: 10px;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-        }
-
         .spin-btn:hover { background: #ff5e7e; transform: scale(1.02); }
-        .settings-trigger-btn:hover { background: #0f3460; }
 
         .spin-btn:disabled {
             background: #555;
@@ -131,6 +117,18 @@
             color: #00fff0;
             min-height: 35px;
             text-align: center;
+        }
+
+        /* الزر السري المموه بذكاء في أسفل الشاشة تماماً */
+        .secret-footer-btn {
+            position: absolute;
+            bottom: 10px;
+            font-size: 11px;
+            color: #3f4d71; /* لون قريب من لون الخلفية الداكنة لكي لا يلاحظ */
+            background: none;
+            border: none;
+            cursor: pointer;
+            user-select: none;
         }
 
         /* النافذة المنبثقة للإعدادات (Modal) */
@@ -255,17 +253,14 @@
                 <canvas id="wheel" width="400" height="400"></canvas>
             </div>
             
-            <!-- حاوية الأزرار أسفل السبنر مباشرة -->
             <div class="actions-container">
                 <button class="spin-btn" id="spinBtn" onclick="spin()">إبدأ السحب!</button>
-                <button class="settings-trigger-btn" onclick="toggleModal(true)">⚙️ فتح لوحة التحكم والنسب</button>
             </div>
             
             <div id="result"></div>
         </div>
     </div>
 
-    <!-- نافذة الإعدادات -->
     <div class="modal-overlay" id="settingsModal">
         <div class="control-panel">
             <button class="close-modal-btn" onclick="toggleModal(false)">✕</button>
@@ -277,6 +272,8 @@
         </div>
     </div>
 
+    <button class="secret-footer-btn" onclick="askForPassword()">© 2026 جميع الحقوق محفوظة لـ ستور.</button>
+
     <script>
         const defaultGifts = [
             { text: "خصم 10%", probability: 50, color: "#1f4068" },
@@ -285,7 +282,6 @@
             { text: "الجائزة الكبرى", probability: 5, color: "#ffaa00" }
         ];
 
-        // ميزة أمان إضافية: التحقق من صحة البيانات لضمان عدم ظهور مصفوفة فارغة
         let savedGifts = JSON.parse(localStorage.getItem('wheelGifts'));
         let gifts = (savedGifts && savedGifts.length > 0) ? savedGifts : defaultGifts;
 
@@ -298,6 +294,16 @@
         function getRandomColor() {
             const colors = ["#1f4068", "#e94560", "#0f3460", "#ffaa00", "#4e0e2e", "#16a085", "#2980b9", "#8e44ad"];
             return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // دالة فحص كلمة المرور المحددة من قبلك
+        function askForPassword() {
+            const password = prompt("الرجاء إدخال رمز التحقق الخاص بالمسؤول لدخول الإعدادات:");
+            if (password === "1379") {
+                toggleModal(true);
+            } else if (password !== null) {
+                alert("رمز التحقق غير صحيح! لا يمكن الدخول لوضع التعديل.");
+            }
         }
 
         function toggleModal(show) {
@@ -454,7 +460,7 @@
             }, 4000);
         }
 
-        // تشغيل أولي لعرض العجلة فوراً بالبيانات الصحيحة
+        // تشغيل أولي لعرض العجلة
         drawWheel();
     </script>
 </body>
